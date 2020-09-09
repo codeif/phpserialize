@@ -1,5 +1,5 @@
-phpserialize
-~~~~~~~~~~~~
+phpserialize3
+~~~~~~~~~~~~~
 
 fork from `mitsuhiko/phpserialize <https://github.com/mitsuhiko/phpserialize>`_
 
