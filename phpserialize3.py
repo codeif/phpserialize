@@ -94,7 +94,7 @@ def dumps(data, charset="utf-8", errors="strict", object_hook=None):
             if obj is None:
                 return "N;"
             if isinstance(obj, bool):
-                return f"b:{obj};"
+                return f"b:{1 if obj else 0};"
             if isinstance(obj, int):
                 return f"i:{obj};"
             if isinstance(obj, float):
