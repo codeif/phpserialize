@@ -126,6 +126,13 @@ def dumps(data, charset="utf-8", errors="strict", object_hook=None):
     return _serialize(data, False)
 
 
+def default_array_hook(items):
+    for i, k in enumerate([x[0] for x in items]):
+        if i != k:
+            return dict(items)
+    return [x[1] for x in items]
+
+
 def load(
     fp,
     charset="utf-8",
@@ -157,7 +164,7 @@ def load(
     `collections.OrderedDict` for an ordered, hashed dictionary.
     """
     if array_hook is None:
-        array_hook = dict
+        array_hook = default_array_hook
 
     def _expect(e):
         v = fp.read(len(e))

@@ -63,24 +63,16 @@ class PhpSerializeTestCase(unittest.TestCase):
             {"a": 1, "b": 2, "c": 3},
         )
 
-    def test_list_roundtrips(self):
+    def test_dumps_and_loads_list(self):
         x = phpserialize3.loads(phpserialize3.dumps(list(range(2))))
-        self.assertEqual(x, {0: 0, 1: 1})
-        y = phpserialize3.dict_to_list(x)
-        self.assertEqual(y, [0, 1])
-
-    def test_tuple_roundtrips(self):
-        x = phpserialize3.loads(phpserialize3.dumps(list(range(2))))
-        self.assertEqual(x, {0: 0, 1: 1})
-        y = phpserialize3.dict_to_tuple(x)
-        self.assertEqual(y, (0, 1))
+        self.assertEqual(x, [0, 1])
 
     def test_fileio_support_with_chaining_and_all(self):
         f = BytesIO()
         phpserialize3.dump([1, 2], f)
         phpserialize3.dump(42, f)
         f = BytesIO(f.getvalue())
-        self.assertEqual(phpserialize3.load(f), {0: 1, 1: 2})
+        self.assertEqual(phpserialize3.load(f), [1, 2])
         self.assertEqual(phpserialize3.load(f), 42)
 
     def test_object_hook(self):
@@ -99,7 +91,7 @@ class PhpSerializeTestCase(unittest.TestCase):
         user = User("test")
         x = phpserialize3.dumps(user, object_hook=dump_object_hook)
         y = phpserialize3.loads(x, object_hook=load_object_hook, decode_strings=True)
-        self.assert_("WP_User" in x)
+        self.assertTrue("WP_User" in x)
         self.assertEqual(type(y), type(user))
         self.assertEqual(y.username, user.username)
 
