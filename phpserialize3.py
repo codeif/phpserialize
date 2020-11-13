@@ -2,6 +2,7 @@
 :copyright: 2007-2012 by Armin Ronacher.
 license: BSD
 """
+from collections.abc import Iterable
 from io import BytesIO
 
 __author__ = "Armin Ronacher <armin.ronacher@active-4.com>"
@@ -84,7 +85,7 @@ def dumps(data, charset="utf-8", errors="strict", object_hook=None):
     def _serialize(obj, keypos):
         if keypos:
             if isinstance(obj, (int, float, bool)):
-                return f"i:{obj};"
+                return f"i:{int(obj)};"
             if isinstance(obj, str):
                 return f's:{len(obj.encode(charset))}:"{obj}";'
             if obj is None:
@@ -103,7 +104,7 @@ def dumps(data, charset="utf-8", errors="strict", object_hook=None):
                 return f's:{len(obj.encode(charset))}:"{obj}";'
             if isinstance(obj, bytes):
                 return f's:{len(obj)}:"{obj.decode(charset, errors)}";'
-            if isinstance(obj, (list, tuple, dict)):
+            if isinstance(obj, Iterable):
                 out = []
                 if isinstance(obj, dict):
                     iterable = obj.items()

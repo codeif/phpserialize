@@ -18,23 +18,10 @@ Usage
 'Hello World'
 
 Due to the fact that PHP doesn't know the concept of lists, lists
-are serialized like hash-maps in PHP.  As a matter of fact the
-reverse value of a serialized list is a dict:
+are serialized like hash-maps in PHP.  Python check it auto:
 
 >>> loads(dumps(range(2)))
-{0: 0, 1: 1}
-
-If you want to have a list again, you can use the `dict_to_list`
-helper function:
-
->>> dict_to_list(loads(dumps(range(2))))
 [0, 1]
-
-It's also possible to convert into a tuple by using the `dict_to_tuple`
-function:
-
->>> dict_to_tuple(loads(dumps((1, 2, 3))))
-(1, 2, 3)
 
 Another problem are unicode strings.  By default unicode strings are
 encoded to 'utf-8' but not decoded on `unserialize`.  The reason for
@@ -42,7 +29,7 @@ this is that phpserialize can't guess if you have binary or text data
 in the strings:
 
 >>> loads(dumps(u'Hello W\xf6rld'))
-'Hello W\xc3\xb6rld'
+'Hello Wörld'
 
 If you know that you have only text data of a known charset in the result
 you can decode strings by setting `decode_strings` to True when calling
