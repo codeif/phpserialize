@@ -7,7 +7,7 @@ setup(
     name="phpserialize3",
     author="Armin Ronacher",
     author_email="armin.ronacher@active-4.com",
-    version="0.1.3",
+    version="0.1.4",
     url="http://github.com/codeif/phpserialize3",
     py_modules=["phpserialize3"],
     description="fork from http://github.com/mitsuhiko/phpserializeh",
