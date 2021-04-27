@@ -18,7 +18,12 @@ __all__ = (
     "dumps",
     "serialize",
     "unserialize",
+    "PHPSerializerError",
 )
+
+
+class PHPSerializerError(ValueError):
+    pass
 
 
 def _translate_member_name(name):
@@ -27,8 +32,8 @@ def _translate_member_name(name):
     return name
 
 
-class phpobject(object):
-    """Simple representation for PHP objects.  This is used """
+class phpobject:
+    """Simple representation for PHP objects. This is used"""
 
     __slots__ = ("__name__", "__php_vars__")
 
@@ -170,7 +175,7 @@ def load(
     def _expect(e):
         v = fp.read(len(e))
         if v != e:
-            raise ValueError("failed expectation, expected %r got %r" % (e, v))
+            raise PHPSerializerError("failed expectation, expected %r got %r" % (e, v))
 
     def _read_until(delim):
         buf = []
@@ -179,7 +184,7 @@ def load(
             if char == delim:
                 break
             elif not char:
-                raise ValueError("unexpected end of stream")
+                raise PHPSerializerError("unexpected end of stream")
             buf.append(char)
         return b"".join(buf)
 
@@ -226,7 +231,7 @@ def load(
             return array_hook(_load_array())
         if type_ == b"o":
             if object_hook is None:
-                raise ValueError(
+                raise PHPSerializerError(
                     "object in serialization dump but " "object_hook not given."
                 )
             _expect(b":")
@@ -237,7 +242,7 @@ def load(
             if decode_strings:
                 name = name.decode(charset, errors)
             return object_hook(name, dict(_load_array()))
-        raise ValueError("unexpected opcode")
+        raise PHPSerializerError("unexpected opcode")
 
     return _unserialize()
 
